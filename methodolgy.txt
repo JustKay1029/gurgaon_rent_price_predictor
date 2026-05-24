@@ -1,0 +1,76 @@
+firstly, from the whole dataset i only took the flats available in gurgaon. Then i dropped the columns which are not necessary for rate prediction,
+we removed the rows (13) which were empyt in total area, because that parameter is important for prices and we couldn't find a way to put some values there.
+after that we made a new column named locality so that the locations given can be grouped mainly based upon the sectors
+the name of the location was given as a string: 
+we first divided that into a list and then found the sectors or phases the rooms were available in
+
+#---Learnings 
++++++++   1 
+
+
+Instead of expanding your dataset sideways into 78 columns, 
+what if we could compress the location information into one single numeric column
+that directly captures the "wealth" or premium of that neighborhood?
+
+This is called Target Encoding.
+Conveyor Belt 1 (TargetEncoder): Took the text column "clean_sector",looked at how much houses historically sell for there, and replaced 
+the text names with their neighborhood's average price value.
+
++++++++   2 
+
+
+The Tool: Boolean Masking with .locIn pandas, when you want to filter rows based on a condition and select specific columns at the same time, 
+the cleanest and most efficient tool is .loc[].The structure of .loc works like this: 
+
+df.loc[row_condition, column_selection]
+
+For example, if you wanted to find where a column named age is null, your row condition would use .isnull().
+
++++++++   3
+
+
+**Reading the Box Plot Anatomy**
+A box plot splits your data into quarters based on mathematical percentiles:
+
+The Main Box: Contains the middle 50% of your data (the bulk of normal apartments in Gurgaon, mostly sitting between 1,500 and 3,500 sqft).
+
+The Orange Line: The median (the absolute middle property size).
+
+The Upper Whisker (The horizontal line around 6,000): This represents the statistical boundary for a "normal maximum" property size based on the distribution variance.
+[This is what happened when i tried applying these methods to some Individual values which exceeded even 33000 sqft.]
+
+The Individual Circles: Every single circle floating above that 6,000 whisker is a mathematical outlier.
+
+**The Strategy: The Interquartile Range (IQR) Formula**
+
+Instead of guessing a arbitrary cutoff number like "let's just delete everything over 6,000 sqft",
+professionals use a mathematical framework called the IQR Method to automatically calculate the exact threshold where a data point becomes an outlier.
+
+The formula works by calculating the distance between the 25th percentile (Q_1) and the 75th percentile (Q_3):IQR = Q_3 - Q_1
+
+The mathematical upper boundary line is defined as:
+Upper Fence = Q_3 + (1.5 * IQR)
+
+Any property with a total_area larger than this Upper Fence gets deleted from our training data.
+
++++++++   4
+***Checking for Multi-Collinearity (The Senior Check)***
+We had to remove, total_area, Rate_per_sqft, Price from our dataset, 
+Price = total_area * Rate_per_sqft
+
+If you leave Rate_per_sqft inside your training features to predict Price, your machine learning model doesn't have to learn anything about bedrooms, localities, or property types.
+It can just multiply total_area by Rate_per_sqft and get a perfect score.
+
+Why is this a problem?
+When your client deploys your model to production on Upwork or Fiverr, a user will input: 
+"I have a 3 BHK in Sector 45 with 2,000 sqft. How much is it worth?" The user will not know the Rate_per_sqft—that's what they are hiring the model to find out! 
+If your model relies on Rate_per_sqft to make its prediction, it will crash in the real world because that information won't be available.
+
+
++++++++   5
+
+Conveyor Belt 2 (OneHotEncoder): Took your categorical description columns ("property", "status", "transaction") and exploded them out into binary flags (columns of 0s and 1s). For example, it made a column called property_Flat (which gets a 1 if it's a flat, and a 0 if it's not).
+
++++++++   6
+
+Conveyor Belt 3 (SimpleImputer): Took your structural number columns ("bathroom", "balcony", "bedroom", "total_area"), checked if any real estate agent forgot to fill them out (NaN holes), and automatically plugged those holes with the middle (median) value of that specific attribute.
