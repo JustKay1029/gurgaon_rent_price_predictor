@@ -43,7 +43,8 @@ ggn["clean_sector"] = ggn["clean_sector"].map(sector_means)
 
 X = ggn.drop(columns=["Price", "Name", "locality", "floor", "facing", "overlooking", "ownership", "parking", "city", "location", "carpet_area_sqft", "property"])
 y = ggn["Price"]
-#print(X.columns.tolist())
+print(X.columns.tolist())
+'''
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 transformer = ColumnTransformer(transformers=[
@@ -63,4 +64,4 @@ print(f"Your Baseline Model R2 Score is: {score}")
 
 with open("property_pipeline.pkl", "wb") as f:
     pickle.dump((transformer, model), f)
-print("Pipeline successfully saved to property_pipeline.pkl!")
+print("Pipeline successfully saved to property_pipeline.pkl!")'''

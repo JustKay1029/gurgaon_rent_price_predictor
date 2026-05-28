@@ -1,13 +1,24 @@
-firstly, from the whole dataset i only took the flats available in gurgaon. Then i dropped the columns which are not necessary for rate prediction,
+## Firstly, from the whole dataset i only took the flats available in Gurgaon. Then I dropped the columns which are not necessary for rate predictionn (like ["Unnamed: 0", "Rate", "carpet.area","Rate_per_sqft"]),
 we removed the rows (13) which were empyt in total area, because that parameter is important for prices and we couldn't find a way to put some values there.
-after that we made a new column named locality so that the locations given can be grouped mainly based upon the sectors
+After that we made a new column named locality so that the locations given can be grouped mainly based upon the sectors
 the name of the location was given as a string: 
-we first divided that into a list and then found the sectors or phases the rooms were available in
+we first divided that into a list and then found the sectors or phases the rooms were available in.
+
+Then we made a dataframe where I first calculated the sector counts and then made a new list where only the sectors that occurred less than three times were obtained.
+After that we used **loc** (whose function is given below in Learnings). 
+
+Now what happened is, that the whole preprocessed dataset is needed to be divided into specific training using Interquartile ranges. 
+Hmmm i dont remember the reason why we wrote the line with .groupby function where we are also taking the mean and then sorting those values.
+
+
+At this particular line of code, our data processing ended:
+ggn.loc[ggn["status"].str.startswith("Poss.", na=False), "status"] = "Under Construction"
+
+**Machine Learning Phase**
+First, we built X and y
 
 #---Learnings 
 +++++++   1 
-
-
 Instead of expanding your dataset sideways into 78 columns, 
 what if we could compress the location information into one single numeric column
 that directly captures the "wealth" or premium of that neighborhood?
@@ -19,7 +30,7 @@ the text names with their neighborhood's average price value.
 +++++++   2 
 
 
-The Tool: Boolean Masking with .locIn pandas, when you want to filter rows based on a condition and select specific columns at the same time, 
+The Tool: Boolean Masking with .loc. In pandas, when you want to filter rows based on a condition and select specific columns at the same time, 
 the cleanest and most efficient tool is .loc[].The structure of .loc works like this: 
 
 df.loc[row_condition, column_selection]
