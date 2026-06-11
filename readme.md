@@ -2,7 +2,7 @@
 
 An end-to-end Machine Learning data product that cleans volatile, web-scraped real estate listings and exposes a trained predictive regression model via an interactive cloud web application.
 
-🚀 **Live Production Link:** https://gurgaonrentpricepredictor-bjktghwqgrt2o5n54nisiq.streamlit.app/
+🚀 **Live Production Link:**https://gurgaon-rent-prediction.netlify.app/
 
 ---
 
