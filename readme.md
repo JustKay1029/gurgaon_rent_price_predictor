@@ -46,3 +46,29 @@ To replicate this environment locally, execute the following commands inside you
    ```bash
    git clone https://github.com/JustKay1029/gurgaon_rent_price_predictor
    cd gurugram_rent_project
+   ```
+
+## Modern Web UI
+
+This repo includes a deployable static frontend:
+
+* `index.html`
+* `styles.css`
+* `script.js`
+* `api/predict.py` for Vercel's Python serverless runtime
+
+### Deploy on Vercel
+
+1. Import the GitHub repository in Vercel.
+2. Keep the framework preset as **Other**.
+3. Deploy from the repository root.
+
+The frontend calls `/api/predict`, which loads `property_pipeline.pkl` and scores the same scikit-learn pipeline used by the Streamlit prototype.
+
+### Deploy on Netlify
+
+1. Import the GitHub repository in Netlify.
+2. Use the included `netlify.toml`.
+3. Publish from the repository root.
+
+Netlify serves the polished static experience. Since Netlify does not run the included Python API by default, the UI automatically uses its browser-side preview estimate there.
