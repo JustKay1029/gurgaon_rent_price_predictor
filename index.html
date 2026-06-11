@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gurugram Home Value Studio</title>
+    <meta
+      name="description"
+      content="A polished Gurugram residential property valuation interface powered by a scikit-learn model."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-label="Property valuation workspace">
+        <div class="summary-panel">
+          <nav class="topbar" aria-label="Workspace">
+            <a class="brand" href="index.html" aria-label="Gurugram Home Value Studio">
+              <span class="brand-mark">G</span>
+              <span>
+                <strong>Gurugram</strong>
+                <small>Value Studio</small>
+              </span>
+            </a>
+            <div class="top-actions">
+              <button class="utility-button" type="button" id="themeButton" aria-label="Switch to dark mode" title="Theme">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v2" />
+                  <path d="M12 19v2" />
+                  <path d="M4.2 4.2l1.4 1.4" />
+                  <path d="M18.4 18.4l1.4 1.4" />
+                  <path d="M3 12h2" />
+                  <path d="M19 12h2" />
+                  <path d="M4.2 19.8l1.4-1.4" />
+                  <path d="M18.4 5.6l1.4-1.4" />
+                  <circle cx="12" cy="12" r="4" />
+                </svg>
+              </button>
+              <span class="model-pill" id="modelMode">Static ready</span>
+            </div>
+          </nav>
+
+          <div class="price-block">
+            <span class="eyebrow">Estimated market value</span>
+            <output class="price" id="priceOutput" for="valuationForm">Rs 2.60 Cr</output>
+            <p id="confidenceText">Prime resale apartment benchmark for the selected micromarket.</p>
+          </div>
+
+          <div class="insight-grid" aria-label="Valuation signals">
+            <article>
+              <span>Price per sq ft</span>
+              <strong id="psfOutput">Rs 17,333</strong>
+            </article>
+            <article>
+              <span>Location index</span>
+              <strong id="sectorOutput">Mid premium</strong>
+            </article>
+            <article>
+              <span>Profile</span>
+              <strong id="profileOutput">3 BHK resale</strong>
+            </article>
+          </div>
+
+          <div class="market-visual" id="marketVisual" aria-label="Gurugram sector line map">
+            <div class="map-toolbar">
+              <div>
+                <span class="eyebrow">Sector map</span>
+                <strong id="mapFocusLabel">Sector 53</strong>
+              </div>
+              <button class="utility-button" type="button" id="fullscreenButton" aria-label="Expand sector map" title="Fullscreen map">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 3H3v5" />
+                  <path d="M16 3h5v5" />
+                  <path d="M21 16v5h-5" />
+                  <path d="M8 21H3v-5" />
+                </svg>
+              </button>
+            </div>
+            <div class="map-frame" id="mapFrame">
+              <div class="map-layer" id="mapLayer">
+                <span class="route golf-line"></span>
+                <span class="route nh-line"></span>
+                <span class="route extension-line"></span>
+                <span class="route dlf-line"></span>
+                <span class="route sector-spur sector-spur-a"></span>
+                <span class="route sector-spur sector-spur-b"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="control-panel" id="valuationForm">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Property inputs</span>
+              <h1>Gurugram residential valuation engine</h1>
+            </div>
+            <button class="icon-button" type="button" id="resetButton" title="Reset inputs" aria-label="Reset inputs">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 3-6.7" />
+                <path d="M3 4v6h6" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="form-grid">
+            <label class="field wide">
+              <span>Location</span>
+              <select id="sector" name="sector">
+                <option>Sector 53</option>
+                <option>DLF City Phase 5</option>
+                <option>Sector 54</option>
+                <option>Sector 26</option>
+                <option>Sector 50</option>
+                <option>Sector 28</option>
+                <option>DLF City Phase 1</option>
+                <option>NH 8</option>
+                <option>DLF Golf Course Road</option>
+                <option>Golf course Extension Road</option>
+                <option>Other</option>
+              </select>
+            </label>
+
+            <fieldset class="segmented wide">
+              <legend>Transaction</legend>
+              <label>
+                <input type="radio" name="transaction" value="Resale" checked />
+                <span>Resale</span>
+              </label>
+              <label>
+                <input type="radio" name="transaction" value="New Property" />
+                <span>New</span>
+              </label>
+            </fieldset>
+
+            <fieldset class="segmented wide">
+              <legend>Status</legend>
+              <label>
+                <input type="radio" name="status" value="Ready to Move" checked />
+                <span>Ready</span>
+              </label>
+              <label>
+                <input type="radio" name="status" value="Under Construction" />
+                <span>Under construction</span>
+              </label>
+            </fieldset>
+
+            <label class="field">
+              <span>Bedrooms</span>
+              <select id="bedroom" name="bedroom">
+                <option>1</option>
+                <option>2</option>
+                <option selected>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Bathrooms</span>
+              <select id="bathroom" name="bathroom">
+                <option>1</option>
+                <option>2</option>
+                <option selected>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Balconies</span>
+              <select id="balcony" name="balcony">
+                <option>0</option>
+                <option>1</option>
+                <option selected>2</option>
+                <option>3</option>
+                <option>4</option>
+              </select>
+            </label>
+
+            <label class="field range-field wide">
+              <span>
+                Area
+                <strong id="areaLabel">1,500 sq ft</strong>
+              </span>
+              <input id="totalArea" name="total_area" type="range" min="300" max="6000" value="1500" step="50" />
+            </label>
+          </div>
+
+          <button class="primary-action" type="submit">
+            <span>Generate valuation</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+          </button>
+          <p class="status-line" id="statusLine">Ready for live model scoring on Vercel.</p>
+        </form>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
